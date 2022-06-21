@@ -70,3 +70,14 @@ listArtifactsForRepo <- function(owner, repo) {
 
   return(as_tibble(res))
 }
+
+#' @export
+deleteArtifact <- function(owner, repo, artifact_id) {
+  url <- sprintf("https://api.github.com/repos/%s/%s/actions/artifacts/%s", owner, repo, artifact_id)
+  req <- request(url) |>
+    req_headers("Accept" = "application/vnd.github.v3+json") |>
+    req_headers("Authorization" = paste("token", Sys.getenv("GITHUB_TOKEN"))) |>
+    req_method("DELETE")
+
+  resp <- req_perform(req)
+}
