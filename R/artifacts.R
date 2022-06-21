@@ -38,7 +38,7 @@ listArtifactsForRepo <- function(owner, repo) {
 .listArtifactsCore <- function(url) {
   req <- request(url) |>
     req_headers("Accept" = "application/vnd.github.v3+json") |>
-    req_headers("Authorization" = paste("token", Sys.getenv("GITHUB_TOKEN"))) |>
+    req_headers("Authorization" = paste("token", Sys.getenv("GITHUB_PAT"))) |>
     req_url_query("per_page" = "100")
 
   ## get the first page of results
@@ -76,7 +76,7 @@ deleteArtifact <- function(owner, repo, artifact_id) {
   url <- sprintf("https://api.github.com/repos/%s/%s/actions/artifacts/%s", owner, repo, artifact_id)
   req <- request(url) |>
     req_headers("Accept" = "application/vnd.github.v3+json") |>
-    req_headers("Authorization" = paste("token", Sys.getenv("GITHUB_TOKEN"))) |>
+    req_headers("Authorization" = paste("token", Sys.getenv("GITHUB_PAT"))) |>
     req_method("DELETE")
 
   resp <- req_perform(req)
