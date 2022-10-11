@@ -2,6 +2,7 @@
 
 export(deleteArtifact)
 export(downloadArtifact)
+export(downloadRunLog)
 export(listArtifacts)
 import(httr2)
 importFrom(dplyr,as_tibble)
