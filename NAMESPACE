@@ -2,6 +2,7 @@
 
 export(deleteArtifact)
 export(downloadArtifact)
+export(downloadArtifact2)
 export(downloadRunLog)
 export(listArtifacts)
 import(httr2)

@@ -91,7 +91,6 @@ downloadArtifact <- function(owner, repo, artifact_id, output_dir) {
     req_headers("Accept" = "application/vnd.github.v3+json") |>
     req_headers("Authorization" = paste("token", Sys.getenv("GITHUB_PAT")))
     
-  
   resp <- req_perform(req) |>
     resp_body_raw()
   
@@ -99,4 +98,22 @@ downloadArtifact <- function(owner, repo, artifact_id, output_dir) {
   writeBin(resp, con = tf)
   unzip(zipfile = tf, exdir = output_dir)
   
+}
+
+#' @export
+downloadArtifact2 <- function(owner, repo, artifact_id, output_dir) {
+  
+  url <- sprintf("https://api.github.com/repos/%s/%s/actions/artifacts/%s/zip", owner, repo, artifact_id)
+  tf <- tempfile(fileext = ".zip")
+  
+  system2("curl", 
+          args = c("--output", tf, "-L",
+                   "-H", '"Accept: application/vnd.github+json"',
+                   "-H", sprintf('"Authorization: Bearer %s"', 
+                                 Sys.getenv("GITHUB_PAT")),
+                   "-H", '"X-GitHub-Api-Version: 2022-11-28"',
+                   url)
+  )
+  
+  unzip(zipfile = tf, exdir = output_dir)
 }
